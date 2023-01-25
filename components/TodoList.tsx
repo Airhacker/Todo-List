@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BsCheckCircle,
   BsCircle,
@@ -15,25 +15,55 @@ const TodoList = () => {
   const [completed, setCompleted] = useState([]);
   const [completedTask, setCompletedTask] = useState(0);
 
-  const addTask = () => {
-    setTodoList([...todoList, task]);
-    setTask("");
+  const addTask = (e) => {
+    e.preventDefault();
+
+    if (task) {
+      setTodoList([...todoList, task]);
+      localStorage.setItem("todoList", JSON.stringify([...todoList, task]));
+      setTask("");
+    } else {
+      console.log("No task added");
+    }
   };
 
   const completeTask = (index) => {
     setCompleted([...completed, todoList[index]]);
     setCompletedTask(completedTask + 1);
+    localStorage.setItem(
+      "completed",
+      JSON.stringify([...completed, todoList[index]])
+    );
+
     todoList.splice(index, 1);
+    setTodoList([...todoList]);
+    localStorage.setItem("todoList", JSON.stringify([...todoList]));
   };
 
   const removeTask = (index) => {
     todoList.splice(index, 1);
     setTodoList([...todoList]);
+    localStorage.setItem("todoList", JSON.stringify([...todoList]));
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("todoList")) {
+      const storedList = JSON.parse(localStorage.getItem("todoList"));
+      setTodoList(storedList);
+    }
+
+    if (localStorage.getItem("completed")) {
+      const storedCompleted = JSON.parse(localStorage.getItem("completed"));
+      setCompleted(storedCompleted);
+    }
+  }, []);
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex content-center justify-between gap-4">
+      <form
+        onSubmit={addTask}
+        className="flex content-center justify-between gap-4"
+      >
         <input
           type="text"
           value={task}
@@ -43,30 +73,28 @@ const TodoList = () => {
           placeholder="Add a task"
           className="w-full px-4 py-3 text-base bg-gray-600 rounded-md"
         />
-        <button
-          className="p-4 text-base bg-blue-600 rounded-md"
-          onClick={addTask}
-        >
+        <button className="p-4 text-base bg-blue-600 rounded-md" type="submit">
           <IoMdAdd />
         </button>
-      </div>
+      </form>
 
       <div>
         <ul className="flex flex-col gap-4">
-          {todoList.map((task, index) => (
-            <li
-              key={task + index}
-              className="flex content-center justify-between gap-4 px-4 py-3 text-base bg-gray-600 rounded-md"
-            >
-              <button onClick={() => completeTask(index)}>
-                <BsCircle />
-              </button>
-              <span className="w-full">{task}</span>
-              <button className="text-base" onClick={removeTask}>
-                <BsTrash />
-              </button>
-            </li>
-          ))}
+          {todoList &&
+            todoList.map((task, index) => (
+              <li
+                key={task + index}
+                className="flex content-center justify-between gap-4 px-4 py-3 text-base bg-gray-600 rounded-md"
+              >
+                <button onClick={() => completeTask(index)}>
+                  <BsCircle />
+                </button>
+                <span className="w-full">{task}</span>
+                <button className="text-base" onClick={() => removeTask(index)}>
+                  <BsTrash />
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
 
