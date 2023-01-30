@@ -5,7 +5,7 @@ const Time = () => {
 
   return (
     <div>
-      <h2 className="pb-4 text-xs text-gray-500">{date}</h2>
+      <h2 className="py-4 text-xs text-gray-500">{date}</h2>
     </div>
   );
 };

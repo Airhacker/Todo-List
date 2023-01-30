@@ -29,7 +29,8 @@ const TodoList = () => {
 
   const completeTask = (index) => {
     setCompleted([...completed, todoList[index]]);
-    setCompletedTask(completedTask + 1);
+    // setCompletedTask(completedTask + 1);
+
     localStorage.setItem(
       "completed",
       JSON.stringify([...completed, todoList[index]])
@@ -46,6 +47,12 @@ const TodoList = () => {
     localStorage.setItem("todoList", JSON.stringify([...todoList]));
   };
 
+  const removeCompletedTask = (index) => {
+    completed.splice(index, 1);
+    setCompleted([...completed]);
+    localStorage.setItem("completed", JSON.stringify([...completed]));
+  };
+
   useEffect(() => {
     if (localStorage.getItem("todoList")) {
       const storedList = JSON.parse(localStorage.getItem("todoList"));
@@ -57,6 +64,11 @@ const TodoList = () => {
       setCompleted(storedCompleted);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("the length is:", completed.length);
+    setCompletedTask(completed.length);
+  }, [completed]);
 
   return (
     <section className="flex flex-col gap-4">
@@ -112,6 +124,12 @@ const TodoList = () => {
                 key={task + index}
               >
                 <span className="text-gray-300 line-through">{task}</span>
+                <button
+                  className="text-base"
+                  onClick={() => removeCompletedTask(index)}
+                >
+                  <BsTrash />
+                </button>
               </li>
             ))}
           </ul>
