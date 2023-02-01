@@ -9,7 +9,7 @@ import {
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 
-const TodoList = () => {
+const TodoList = (props) => {
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState("");
   const [completed, setCompleted] = useState([]);
@@ -83,9 +83,14 @@ const TodoList = () => {
             setTask(e.target.value);
           }}
           placeholder="Add a task"
-          className="w-full px-4 py-3 text-base bg-gray-600 rounded-md"
+          className={`w-full px-4 py-3 text-base rounded-md drop-shadow-md ${
+            props.background ? "bg-gray-600" : "bg-white"
+          }`}
         />
-        <button className="p-4 text-base bg-blue-600 rounded-md" type="submit">
+        <button
+          className="p-4 text-base bg-blue-600 rounded-md drop-shadow-md"
+          type="submit"
+        >
           <IoMdAdd />
         </button>
       </form>
@@ -96,7 +101,9 @@ const TodoList = () => {
             todoList.map((task, index) => (
               <li
                 key={task + index}
-                className="flex content-center justify-between gap-4 px-4 py-3 text-base bg-gray-600 rounded-md"
+                className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
+                  props.background ? "bg-gray-600" : "bg-white"
+                }`}
               >
                 <button onClick={() => completeTask(index)}>
                   <BsCircle />
@@ -112,15 +119,21 @@ const TodoList = () => {
 
       <div className="flex flex-col gap-4 my-4">
         <div className="flex gap-4 ">
-          <h3>Completed</h3>
+          <h3 className={`${props.background ? "text-white" : "text-black"}`}>
+            Completed
+          </h3>
           <span className="text-gray-500">{completedTask}</span>
         </div>
-        <hr />
+        <hr
+          className={`h-[1px] ${props.background ? "bg-white" : "bg-black"}`}
+        />
         <div>
           <ul className="flex flex-col gap-4">
             {completed.map((task, index) => (
               <li
-                className="flex content-center justify-between gap-4 px-4 py-3 text-base bg-gray-600 rounded-md"
+                className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
+                  props.background ? "bg-gray-600" : "bg-white"
+                }`}
                 key={task + index}
               >
                 <span className="text-gray-300 line-through">{task}</span>

@@ -54,10 +54,10 @@ export default function Home() {
               </button>
             </div>
 
-            <Time />
+            <Time background={background} />
           </div>
 
-          <TodoList />
+          <TodoList background={background} />
         </div>
       </section>
     </>
