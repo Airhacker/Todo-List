@@ -6,7 +6,7 @@ const Time = (props) => {
   return (
     <div>
       <h2
-        className={`py-4 text-xs ${
+        className={`pb-4 text-xs ${
           props.background ? "text-gray-500" : "text-gray-700"
         }`}
       >

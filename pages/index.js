@@ -35,7 +35,11 @@ export default function Home() {
                 Todo List
               </h1>
               <div className="flex content-center justify-center gap-4 py-4">
-                <button
+                <motion.button
+                  whileHover={{
+                    scale: 1.25,
+                    transition: { ease: "linear", duration: 0.01 },
+                  }}
                   onClick={changeBackgorundColor}
                   htmlFor="backgroundButton"
                 >
@@ -44,7 +48,7 @@ export default function Home() {
                   ) : (
                     <BsFillSunFill className="text-xl text-black" />
                   )}
-                </button>
+                </motion.button>
               </div>
             </div>
 

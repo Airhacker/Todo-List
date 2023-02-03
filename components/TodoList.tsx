@@ -66,6 +66,7 @@ const TodoList = (props) => {
 
   return (
     <section className="flex flex-col gap-4">
+      {/* User input for TODO list */}
       <form
         onSubmit={addTask}
         className="flex content-center justify-between gap-4"
@@ -85,10 +86,18 @@ const TodoList = (props) => {
           className="p-4 text-base text-white bg-blue-600 rounded-md drop-shadow-md"
           type="submit"
         >
-          <IoMdAdd />
+          <motion.div
+            whileHover={{
+              scale: 1.25,
+              transition: { ease: "linear", duration: 0.01 },
+            }}
+          >
+            <IoMdAdd />
+          </motion.div>
         </button>
       </form>
 
+      {/* TODO list */}
       <div>
         <ul className="flex flex-col gap-4">
           <AnimatePresence>
@@ -106,22 +115,29 @@ const TodoList = (props) => {
                   exit={{ opacity: 0, x: 500 }}
                   transition={{ ease: "linear", duration: 0.2, delay: 0.05 }}
                 >
-                  <button onClick={() => completeTask(index)}>
+                  <button
+                    onClick={() => completeTask(index)}
+                    className={`${
+                      props.background ? "text-white" : "text-black"
+                    }`}
+                  >
                     <BsCircle />
                   </button>
                   <span className="w-full">{task}</span>
-                  <button
-                    className="text-base hover:text-red-500"
+                  <motion.button
+                    whileHover={{ rotate: 20 }}
+                    className="text-base transition-transform hover:text-red-600"
                     onClick={() => removeTask(index)}
                   >
                     <BsTrash />
-                  </button>
+                  </motion.button>
                 </motion.li>
               ))}
           </AnimatePresence>
         </ul>
       </div>
 
+      {/* Completed tasks */}
       <div className="flex flex-col gap-4 my-4">
         <div className="flex gap-4 ">
           <h3 className={`${props.background ? "text-white" : "text-black"}`}>
@@ -147,14 +163,15 @@ const TodoList = (props) => {
                   transition={{ ease: "linear", duration: 0.2, delay: 0.05 }}
                 >
                   <span className="text-gray-300 line-through">{task}</span>
-                  <button
-                    className={`text-base ${
+                  <motion.button
+                    whileHover={{ rotate: 20 }}
+                    className={`text-base hover:text-red-600 ${
                       props.background ? "text-white" : "text-black"
                     }`}
                     onClick={() => removeCompletedTask(index)}
                   >
                     <BsTrash />
-                  </button>
+                  </motion.button>
                 </motion.li>
               ))}
             </AnimatePresence>
