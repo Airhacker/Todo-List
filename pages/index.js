@@ -4,6 +4,7 @@ import Time from "../components/Time";
 import { GiPlainCircle } from "react-icons/gi";
 import { BsMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [background, setBackground] = useState(true);
@@ -25,36 +26,31 @@ export default function Home() {
       >
         <div className="w-11/12 mx-auto">
           <div className="flex flex-col content-center justify-start">
-            <h1
-              className={`py-4 text-xl font-bold ${
-                background ? "text-white" : "text-black"
-              }`}
-            >
-              Todo List
-            </h1>
-
-            <div className="flex content-center justify-start gap-4">
-              <label htmlFor="backgroundButton">
-                {background ? (
-                  <BsMoonStarsFill className="text-lg text-white" />
-                ) : (
-                  <BsFillSunFill className="text-lg text-black" />
-                )}
-              </label>
-              <button
-                name="backgroundButton"
-                onClick={changeBackgorundColor}
-                className={`flex content-center p-0.5 w-10 rounded-full ${
-                  background
-                    ? "text-black bg-white justify-start"
-                    : "text-white bg-black justify-end"
+            <div className="flex content-center justify-between">
+              <h1
+                className={`py-4 text-xl font-bold ${
+                  background ? "text-white" : "text-black"
                 }`}
               >
-                <GiPlainCircle></GiPlainCircle>
-              </button>
+                Todo List
+              </h1>
+              <div className="flex content-center justify-center gap-4 py-4">
+                <button
+                  onClick={changeBackgorundColor}
+                  htmlFor="backgroundButton"
+                >
+                  {background ? (
+                    <BsMoonStarsFill className="text-xl text-white" />
+                  ) : (
+                    <BsFillSunFill className="text-xl text-black" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            <Time background={background} />
+            <div>
+              <Time background={background} />
+            </div>
           </div>
 
           <TodoList background={background} />

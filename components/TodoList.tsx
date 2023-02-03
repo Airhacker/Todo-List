@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  BsCheckCircle,
-  BsCircle,
-  BsTrash,
-  BsFillTrashFill,
-  BsChevronRight,
-} from "react-icons/bs";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import { BsCircle, BsTrash } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TodoList = (props) => {
   const [todoList, setTodoList] = useState([]);
@@ -84,11 +78,11 @@ const TodoList = (props) => {
           }}
           placeholder="Add a task"
           className={`w-full px-4 py-3 text-base rounded-md drop-shadow-md ${
-            props.background ? "bg-gray-600" : "bg-white"
+            props.background ? "bg-gray-600 text-white" : "bg-white text-black"
           }`}
         />
         <button
-          className="p-4 text-base bg-blue-600 rounded-md drop-shadow-md"
+          className="p-4 text-base text-white bg-blue-600 rounded-md drop-shadow-md"
           type="submit"
         >
           <IoMdAdd />
@@ -97,23 +91,34 @@ const TodoList = (props) => {
 
       <div>
         <ul className="flex flex-col gap-4">
-          {todoList &&
-            todoList.map((task, index) => (
-              <li
-                key={task + index}
-                className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
-                  props.background ? "bg-gray-600" : "bg-white"
-                }`}
-              >
-                <button onClick={() => completeTask(index)}>
-                  <BsCircle />
-                </button>
-                <span className="w-full">{task}</span>
-                <button className="text-base" onClick={() => removeTask(index)}>
-                  <BsTrash />
-                </button>
-              </li>
-            ))}
+          <AnimatePresence>
+            {todoList &&
+              todoList.map((task, index) => (
+                <motion.li
+                  key={task + index}
+                  className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
+                    props.background
+                      ? "bg-gray-600 text-white"
+                      : "bg-white text-black"
+                  }`}
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: 500 }}
+                  transition={{ ease: "linear", duration: 0.2, delay: 0.05 }}
+                >
+                  <button onClick={() => completeTask(index)}>
+                    <BsCircle />
+                  </button>
+                  <span className="w-full">{task}</span>
+                  <button
+                    className="text-base hover:text-red-500"
+                    onClick={() => removeTask(index)}
+                  >
+                    <BsTrash />
+                  </button>
+                </motion.li>
+              ))}
+          </AnimatePresence>
         </ul>
       </div>
 
@@ -129,22 +134,30 @@ const TodoList = (props) => {
         />
         <div>
           <ul className="flex flex-col gap-4">
-            {completed.map((task, index) => (
-              <li
-                className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
-                  props.background ? "bg-gray-600" : "bg-white"
-                }`}
-                key={task + index}
-              >
-                <span className="text-gray-300 line-through">{task}</span>
-                <button
-                  className="text-base"
-                  onClick={() => removeCompletedTask(index)}
+            <AnimatePresence>
+              {completed.map((task, index) => (
+                <motion.li
+                  className={`flex content-center justify-between gap-4 px-4 py-3 text-base rounded-md drop-shadow-md ${
+                    props.background ? "bg-gray-600" : "bg-white"
+                  }`}
+                  key={task + index}
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: 500 }}
+                  transition={{ ease: "linear", duration: 0.2, delay: 0.05 }}
                 >
-                  <BsTrash />
-                </button>
-              </li>
-            ))}
+                  <span className="text-gray-300 line-through">{task}</span>
+                  <button
+                    className={`text-base ${
+                      props.background ? "text-white" : "text-black"
+                    }`}
+                    onClick={() => removeCompletedTask(index)}
+                  >
+                    <BsTrash />
+                  </button>
+                </motion.li>
+              ))}
+            </AnimatePresence>
           </ul>
         </div>
       </div>
